@@ -2,4 +2,4 @@
 
 Members:
 
-    - aluriak
+- aluriak
