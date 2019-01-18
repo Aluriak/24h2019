@@ -2,5 +2,6 @@
 
 Members:
 
-    - aluriak
-    - jnsll
+- aluriak
+- PSV
+- jnsll
