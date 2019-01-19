@@ -154,3 +154,11 @@ class Laumio:
     def _send(self, topic, message:str or [int]):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
         return utils.send_through_client(self.client, topic, message)
+
+
+    @staticmethod
+    def init_all():
+        client = ...
+        # detect existing laumio
+        # make class instances
+        return  # new GroupLaumio instance
