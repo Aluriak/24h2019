@@ -15,7 +15,7 @@ import utils
 
 def complete_manipulation(client):
     commands = ['toggle', 'toggle', 'stop', 'play', 'next', 'pause', 'play', 'previous', 'setvol', 'setvol', 'stop']
-    volume = [35, 15]
+    volume = [30, 90]
     nb_vol = 0
     for cmd in commands:
         print(f'CMD: {cmd}')
@@ -28,6 +28,7 @@ def complete_manipulation(client):
         time.sleep(2)
 
 def toggle_manip(client):
+    music.music_control(client, 'setvol', value='90')
     music.music_control(client, 'toggle', value=None)
     time.sleep(2)
     music.music_control(client, 'toggle', value=None)
@@ -47,3 +48,4 @@ if __name__ == "__main__":
     else:
         print(__doc__)
     complete_manipulation(utils.create_client(servername, int(port)))
+    # toggle_manip(utils.create_client(servername, int(port)))
