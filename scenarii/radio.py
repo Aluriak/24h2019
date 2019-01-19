@@ -27,9 +27,10 @@ def complete_manipulation(client):
         time.sleep(2)
 
 def toggle_manip(client):
-    for i in range(0,2):
-        music.music_control(client, 'toggle', value=None)
-        time.sleep(2)
+    music.music_control(client, 'toggle', value=None)
+    time.sleep(2)
+    music.music_control(client, 'toggle', value=None)
+    time.sleep(2)
 
 
 if __name__ == "__main__":
