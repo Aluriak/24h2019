@@ -12,7 +12,7 @@ class Laumio:
 
 
     def off():
-        """ Swith the laumio off. Meaning the color is set to black."""
+        """ Swith the laumio off. Meaning the color of the laumio is set to black."""
         rgb = utils.rgb_from_colorname('black')
         topic = self.topic.format(
         name=self.name,
@@ -20,7 +20,6 @@ class Laumio:
         )
         self.client.publish(topic, payload=rgb)
 
-        ...
 
     # function changing the color of the whole laumio
     def all_blue(self):
