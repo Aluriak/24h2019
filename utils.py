@@ -5,6 +5,7 @@
 
 # Standard imports
 import uuid
+import struct
 import traceback
 import PIL.ImageColor
 from functools import wraps
@@ -29,6 +30,7 @@ def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_
     """Return a new client initialized with given args"""
     client = mqtt.Client(client_id=id_prefix + str(uuid.uuid4()))
     client.connect(servername, port=port)
+    client.loop_start()
     return client
 
 def send_through_client(client, topic:str, message:str or [int] or None=None):
@@ -37,7 +39,7 @@ def send_through_client(client, topic:str, message:str or [int] or None=None):
         pass  # nothing to do (message is already correctly initialized)
     else:  # must be an iterable of integers
         integers = tuple(message)
-        assert not any(integer > 255 for integer in integers)
+        assert not any(not isinstance(integer, int) or integer > 255 for integer in integers), integers
         message = struct.pack('B' * len(integers), *integers)
     return client.publish(topic, payload=message).wait_for_publish()
 

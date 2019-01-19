@@ -133,15 +133,15 @@ class Laumio:
     # functions dealing with the colors of the rings of the laumio
     def bottom_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['BOTTOM'], color)
+        self.set_ring(conf.RINGS['BOTTOM'], utils.rgb_from_colorname(color))
 
     def middle_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['MIDDLE'], color)
+        self.set_ring(conf.RINGS['MIDDLE'], utils.rgb_from_colorname(color))
 
     def top_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['TOP'], color)
+        self.set_ring(conf.RINGS['TOP'], utils.rgb_from_colorname(color))
 
     def _send(self, topic, message:str or [int]):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
