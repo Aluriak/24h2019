@@ -8,3 +8,11 @@ install_other_repos:
 	cd other_repos && git clone https://github.com/haum/mqtt_mpd
 	cd other_repos && git clone https://github.com/haum/laumio
 	cd other_repos/mqtt_mpd && pip install -r requirements.txt
+
+
+t: test
+test:
+	python -m pytest *.py -vv --ignore=venv --doctest-module
+
+
+.PHONY: t test
