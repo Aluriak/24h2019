@@ -151,5 +151,4 @@ class Laumio:
     @staticmethod
     def init_all():
         client = utils.create_client()
-        laumios = LaumioGroup(client)
-        return laumios
+        return LaumioGroup(client)
