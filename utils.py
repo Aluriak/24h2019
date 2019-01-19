@@ -4,7 +4,6 @@
 """
 
 # Standard imports
-import sys
 import uuid
 import traceback
 import PIL.ImageColor
