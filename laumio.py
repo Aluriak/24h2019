@@ -83,7 +83,7 @@ class Laumio:
         self._send(topic, None)
 
 
-    def fill(self, rgb_values):
+    def fill(self, rgb_values:str or [int]):
         """Set all leds with the given color.
 
         .. note:: Message strucure on 3 bytes: BBB: RGB values
@@ -92,7 +92,7 @@ class Laumio:
             name=self.name,
             cmd=self.fill.__name__
         )
-        self._send(topic, rgb_values)
+        self._send(topic, utils.rgb_from_colorname(rgb_values))
 
     # Alias to fill
     all = fill
@@ -126,8 +126,7 @@ class Laumio:
     # function changing the color of the whole laumio
     def all_blue(self):
         """ Change the color of all the LEDs of the laumio to blue"""
-        blue = utils.rgb_from_colorname('blue')
-        self.fill(blue)
+        self.fill('blue')
 
 
     # functions dealing with the colors of the rings of the laumio

@@ -40,8 +40,14 @@ def send_through_client(client, topic:str, message:str or [int] or None=None):
     else:  # must be an iterable of integers
         integers = tuple(message)
         assert not any(not isinstance(integer, int) or integer > 255 for integer in integers), integers
-        # message = struct.pack('B' * len(integers), *integers)
-        message = ''.join(map(chr, integers))
+        message = struct.pack('B' * len(integers), *integers)  # NOPE
+        # message = ''.join(map(chr, integers))   # NOPE
+        # message = ','.join(map(str, integers))  # NOPE
+        # message = bytearray(integers)           # NOPE
+        # message = ''.join(map(str, integers))   # NOPE
+        # message = bytearray([0, 255, 0, 0])     # NOPE
+        # message = ''.join(map(str, integers))   # NOPE
+        # print(f'{integers} -> {message}')  # merci Florent pour le fix
     return client.publish(topic, payload=message).wait_for_publish()
 
 

@@ -9,13 +9,16 @@ class LaumioGroup:
         from laumio import Laumio
         self._laumios = []
         # retrieving of the laumios' names
-        laumios_names= discover_laumio(client)
+        laumios_names = discover_laumio(client)
         for name in laumios_names:
             laumio = Laumio(client, name)
             self._laumios.append(laumio)
 
     def __iter__(self):
         return iter(list(self._laumios))
+
+    def __len__(self):
+        return len(self._laumios)
 
     def as_matrix(self):
         """As __iter__, but as a matrix matching the real world distribution of laumios"""
