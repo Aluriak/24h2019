@@ -34,7 +34,7 @@ def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_
 
 def send_through_client(client, topic:str, message:str or [int]):
     """Wrapper around client.publish, allowing code to send either str or iterable of integers"""
-    if isinstance(message, str):  # it's a message to send
+    if isinstance(message, str) or message is None:  # it's a message to send
         pass  # nothing to do (message is already correctly initialized)
     else:  # must be an iterable of integers
         integers = tuple(message)
