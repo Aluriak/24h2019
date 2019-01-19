@@ -8,6 +8,7 @@ COMMAND_ALL_TOPIC = "laumio/all/{cmd}"
 COMMAND_TARGET_TOPIC = "laumio/{name}/{cmd}"
 CONNECTION_STATUS_SENSORS = "{sensors}/status"
 REMOTE_CMD_TOPIC = "remote/{cmd}/state"
+COMMAND_MUSIC = "music/control/{cmd}"
 
 # Rings def
 RINGS = {
