@@ -10,8 +10,8 @@ CONNECTION_STATUS_SENSORS = "{sensors}/status"
 REMOTE_CMD_TOPIC = "remote/{cmd}/state"
 COMMAND_MUSIC = "music/control/{cmd}"
 SENSORS_BP_LED = "capteur_bp/switch/led{num}/state"
-SENSORS_BP_BUTTON = "capteur_bp/binary_sensor/bp{}/state"
-SENSORS_BP_CMD_LED = "capteur_bp/switch/led{}/command"
+SENSORS_BP_BUTTON = "capteur_bp/binary_sensor/bp{num}/state"
+SENSORS_BP_CMD_LED = "capteur_bp/switch/led{num}/command"
 
 # Rings def
 RINGS = {
