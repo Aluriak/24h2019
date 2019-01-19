@@ -2,7 +2,9 @@
 import time
 import paho.mqtt.client as mqtt
 from test import on_message, on_publish, on_connect
+from utils import crash_on_error
 
+@crash_on_error
 def on_subscribe(client, userdata, mid, granted_qos):
     print(f'SUBSCRIBE: client: {client} userdata: {userdata}  mid:{mid}  granted_qos:{granted_qos}')
 

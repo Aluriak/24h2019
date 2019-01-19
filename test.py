@@ -1,12 +1,18 @@
 
 import time
 import paho.mqtt.client as mqtt
+from utils import crash_on_error
 
 
+@crash_on_error
 def on_message(client, userdata, message):
     print(f'MESSAGE: client: {client}   userdata: {userdata}    message: "{message.payload}" (topic: {message.topic})')
+
+@crash_on_error
 def on_publish(*args):
     print(f'PUBLISH: {publish}')
+
+@crash_on_error
 def on_connect(client, userdata, flags, rc):
     print(f'CONNECT: client: {client}   userdata: {userdata}  flags: {flags}  rc: {rc})')
 
