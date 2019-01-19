@@ -20,6 +20,9 @@ def main(laumios):
 
         for laumio in random.sample(laumios, len(laumios) // 2):
             print(f'laumio: {laumio.name}')
+            # if laumio.name.endswith('439BA9'):  # the one used by HAUM guys to debug
+                # laumio.set_pixel(3, random.choice(('sienna', 'blue', 'green', 'red')))
+                # laumio.set_column(1, random.choice(('sienna', 'blue', 'green', 'red')))
             laumio.bottom_ring('blue')
             laumio.middle_ring('white')
             laumio.top_ring('red')
