@@ -3,6 +3,7 @@
 
 # Standard imports
 import utils
+import json
 
 # Custom imports
 import conf
@@ -21,79 +22,81 @@ class Laumio:
 
         .. note:: Message strucure on 4 bytes: BBBB: LED number, RGB values
         """
-        message = struct.pack('BBBB', led_num, red_value, green_value, blue_value)
         topic = self.topic.format(
             name=self.name,
-            cmd=set_pixel.__name__
+            cmd=self.set_pixel.__name__
         )
         message = [led_num] + list(rgb_values)
         self._send(topic, message)
 
 
-    def set_ring(ring_num, rgb_values):
+    def set_ring(self, ring_num, rgb_values):
         """Set the color of a ring.
 
         .. note:: Message strucure on 4 bytes: BBBB: ring number, RGB values
         """
         topic = self.topic.format(
             name=self.name,
-            cmd=set_ring.__name__
+            cmd=self.set_ring.__name__
         )
         message = [ring_num] + list(rgb_values)
         self._send(topic, message)
 
 
-    def set_column(column_num, rgb_values):
+    def set_column(self, column_num, rgb_values):
         """Set the color of a column.
 
         .. note:: Message strucure on 4 bytes: BBBB: column number, RGB values
         """
         topic = self.topic.format(
             name=self.name,
-            cmd=set_column.__name__
+            cmd=self.set_column.__name__
         )
         message = [column_num] + list(rgb_values)
         self._send(topic, message)
 
 
-    def color_wipe(timeout, red_value, green_value, blue_value):
+    def color_wipe(self, timeout, rgb_values):
         """Progressive fill animation with color and duration.
 
         .. note:: Message strucure on 4 bytes: BBBB: RGB values, timeout
         """
         topic = self.topic.format(
             name=self.name,
-            cmd=color_wipe.__name__
+            cmd=self.color_wipe.__name__
         )
         message = list(rgb_values) + [timeout]
         self._send(topic, message)
 
 
-    def animate_rainbow():
+    def animate_rainbow(self):
         """Start rainbow animation.
 
         .. note:: No message needed.
         """
         topic = self.topic.format(
             name=self.name,
-            cmd=animate_rainbow.__name__
+            cmd=self.animate_rainbow.__name__
         )
         self._send(topic, None)
 
 
-    def fill(rgb_values):
+    def fill(self, rgb_values):
         """Set all leds with the given color.
 
         .. note:: Message strucure on 3 bytes: BBB: RGB values
         """
         topic = self.topic.format(
             name=self.name,
-            cmd=fill.__name__
+            cmd=self.fill.__name__
         )
         self._send(topic, rgb_values)
 
+    # Alias to fill
+    all = fill
 
-    def send_JSON(json_data):
+
+    def send_JSON(self, json_data):
         """Send JSON commands.
 
         .. note:: JSON data is verified here.
@@ -107,12 +110,12 @@ class Laumio:
 
         topic = self.topic.format(
             name=self.name,
-            cmd=get_command(send_JSON.__name__)
+            cmd=conf.get_command(self.send_JSON.__name__)
         )
         self._send(topic, json_data)
 
 
-    def off():
+    def off(self):
         """Swith the laumio off. Meaning the color of the laumio is set to black."""
         black = utils.rgb_from_colorname('black')
         self.fill(black)
@@ -124,27 +127,19 @@ class Laumio:
         blue = utils.rgb_from_colorname('blue')
         self.fill(blue)
 
-    def all(color):
-        """Change the color of all the LEDs of the laumio to chosen color"""
-        rgb = utils.rgb_from_colorname(color)
-        topic = COMMAND_TARGET_TOPIC.format(name=self.name, cmd="fill")
-        self.client.publish(topic, payload=rgb)
 
-    # functions dealing with the colors of the rings of the laumio 
-    def bottom_ring(color):
+    # functions dealing with the colors of the rings of the laumio
+    def bottom_ring(self, color):
         """ """
-        topic = COMMAND_TARGET_TOPIC.format(name=self.name, cmd="set_ring")
-        color = utils.get_color_from_rgb(color)
-        message = 
-        self.client.publish(topic, payload=message)
+        self.set_ring(self, conf.RINGS['BOTTOM'], color)
 
-    def middle_ring():
+    def middle_ring(self, color):
         """ """
-        ...
-    
-    def top_ring():
+        self.set_ring(self, conf.RINGS['MIDDLE'], color)
+
+    def top_ring(self, color):
         """ """
-        ...
+        self.set_ring(self, conf.RINGS['TOP'], color)
 
     def _send(self, topic, message:str or [int]):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
