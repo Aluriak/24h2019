@@ -9,6 +9,10 @@ COMMAND_TARGET_TOPIC = "laumio/{name}/{cmd}"
 CONNECTION_STATUS_SENSORS = "{sensors}/status"
 
 
+
+# List of SENSORS
+SENSORS_LIST = ('capteur_bp','presence','distance','atmosphere')
+
 # List of commands
 # => mapping for commands that differ from their function's name.
 COMMANDS = {

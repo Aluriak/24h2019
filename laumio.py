@@ -113,8 +113,14 @@ class Laumio:
 
 
     def off():
-        """ """
-        ...
+        """ Swith the laumio off. Meaning the color of the laumio is set to black."""
+        rgb = utils.rgb_from_colorname('black')
+        topic = self.topic.format(
+        name=self.name,
+        cmd=fill.__name__
+        )
+        self.client.publish(topic, payload=rgb)
+
 
     # function changing the color of the whole laumio
     def all_blue(self):
@@ -149,4 +155,12 @@ class Laumio:
         """ """
         ...
 
-
+    def _send(self, topic, message:str or [int]):
+        """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
+        if isinstance(message, str):  # it's a message to send
+            pass  # nothing to do (message is already correctly initialized)
+        else:  # must be an iterable of integers
+            integers = tuple(message)
+            assert not any(integer > 255 for integer in integers)
+            message = struct.pack('B' * len(integers), *integers)
+        return self.client.publish(topic, payload=message)
