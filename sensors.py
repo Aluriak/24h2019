@@ -7,7 +7,8 @@ import paho.mqtt.client as mqtt
 
 def sub(client, topic, *, timeout=1):
     last_msg = None
-    def set_last_msg( message):
+    def set_last_msg(client, userdata, message):
+        nonlocal last_msg
         last_msg = message.payload
     client.on_message = set_last_msg
     client.subscribe(topic)
@@ -30,7 +31,7 @@ def get_detection(client):
     return sub(client, 'presence/state')
 
 def get_remote(client, cmd):
-    return sub(client, conf.REMOTE_CMD_TOPIC.format(cmd=cmd) == 'ON'
+    return sub(client, conf.REMOTE_CMD_TOPIC.format(cmd=cmd)) == 'ON'
 
 def status(client, device):
     if device in SENSORS_LIST:
@@ -39,6 +40,6 @@ def status(client, device):
         return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
 
 def discover_laumio(client):
-    utils.send_through_client(client, conf.COMMAND_ALL_TOPIC.format(cmd=discover)
+    utils.send_through_client(client, conf.COMMAND_ALL_TOPIC.format(cmd=discover))
 
 
