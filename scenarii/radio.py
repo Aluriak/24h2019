@@ -18,11 +18,12 @@ def complete_manipulation(client):
     volume = [35, 15]
     nb_vol = 0
     for cmd in commands:
+        print(f'CMD: {cmd}')
         if cmd != 'setvol' :
             music.music_control(client, cmd, value=None)
         else:
             if nb_vol < len(volume):
-                music.music_control(client, cmd, value=volume[nb_vol])
+                music.music_control(client, cmd, value=str(volume[nb_vol]))
                 nb_vol+=1
         time.sleep(2)
 
@@ -45,4 +46,4 @@ if __name__ == "__main__":
         port = sys.argv[2]
     else:
         print(__doc__)
-    toggle_manip(utils.create_client(servername, port))
+    complete_manipulation(utils.create_client(servername, int(port)))
