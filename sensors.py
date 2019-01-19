@@ -42,13 +42,13 @@ def status(client, device):
         return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
 
 def get_bp_led_status(client, numLed):
-    return sub(client, conf.SENSORS_BP_LED.format(numLed)
+    return sub(client, conf.SENSORS_BP_LED.format(numLed))
 
 def get_bp_button_status(client, numButton):
-    return sub(client, conf.SENSORS_BP_BUTTON(numButton)
+    return sub(client, conf.SENSORS_BP_BUTTON(numButton))
 
 def set_bp_led(client, numLed):
-    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(numLed)
+    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(numLed))
 
 def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
