@@ -4,7 +4,6 @@ import utils
 from collections import namedtuple
 import paho.mqtt.client as mqtt
 
-
 def sub(client, topic, *, timeout=1):
     last_msg = None
     def set_last_msg(client, userdata, message):
@@ -18,7 +17,9 @@ def sub(client, topic, *, timeout=1):
     first_time = time.time()
     while last_msg is None and (time.time()-first_time) < timeout:
         time.sleep(0.01)
+    client.unsubscribe(topic)
     return last_msg
+    
 
 def get_atmos(client):
     Atmos = namedtuple('Atmos',['temperature','pression','humidite_abs','humidite'])
@@ -31,7 +32,7 @@ def get_dist(client):
     return sub(client, 'distance/value')
 
 def get_detection(client):
-    return sub(client, 'presence/state')
+    return sub(client, 'presence/state') == 'ON'
 
 def get_remote(client, cmd):
     return sub(client, conf.REMOTE_CMD_TOPIC.format(cmd=cmd)) == 'ON'
@@ -41,6 +42,15 @@ def status(client, device):
         return sub(client, conf.CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
     else:
         return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
+
+def get_bp_led_status(client, numLed):
+    return sub(client, conf.SENSORS_BP_LED.format(num=numLed)) == 'ON'
+
+def get_bp_button_status(client, numButton):
+    return sub(client, conf.SENSORS_BP_BUTTON(num=numButton)) == 'ON'
+
+def set_bp_led(client, numLed, msg='ON'):
+    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(num=numLed), msg)
 
 def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
@@ -56,5 +66,6 @@ def discover_laumio(client):
     print(f'… ({conf.ANNOUNCE_TOPIC})')
     utils.send_through_client(client, topic)
     time.sleep(3)
+    client.unsubscribe(topic)
     print('DONE')
     return tuple(laumios)
