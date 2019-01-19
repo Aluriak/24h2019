@@ -1,12 +1,11 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Standard imports
 import utils
 import json
 
-# Custom imports
 import conf
+
 
 class Laumio:
     """Laumio class dedicated to the gestion of 1 laumio."""
