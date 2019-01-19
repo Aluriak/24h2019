@@ -4,9 +4,10 @@
 
 import sys
 import uuid
-from matplotlib import colors
 import traceback
+import PIL.ImageColor
 from functools import wraps
+from matplotlib import colors
 
 import paho.mqtt.client as mqtt
 
@@ -37,8 +38,25 @@ def rgb_from_colorname(name:str) -> (int, int, int):
     (255, 0, 0)
     >>> rgb_from_colorname('blue')
     (0, 0, 255)
+    >>> rgb_from_colorname((70, 113, 125))
+    (70, 113, 125)
+    >>> rgb_from_colorname('sienna')
+    (160, 82, 45)
 
     """
-    float_to_int = lambda x: int(round(x*255, 0))
-    return tuple(map(float_to_int, colors.to_rgba(name)[:3]))
+    if isinstance(name, (tuple, list)):
+        if len(name) != 3:
+            raise ValueError(f"Given color '{name}' is not a valid RBG color")
+        return name
+    def from_matplotlib(name:str):
+        float_to_int = lambda x: int(round(x*255, 0))
+        return tuple(map(float_to_int, colors.to_rgba(name)[:3]))
+    hex = PIL.ImageColor.colormap.get(name)
+    if hex is None:
+        rgb = from_matplotlib(name)
+        if rgb is None:
+            raise ValueError(f"Unknow color name {name} (see https://stackoverflow.com/a/54165440/3077939 )")
+        return rgb
+    return tuple(bytes.fromhex(hex[1:]))
+
 
