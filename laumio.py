@@ -1,6 +1,11 @@
-#/usr/bin/env python3
+#/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Standard imports
 import utils
-import conf 
+
+# Custom imports
+import conf
 
 class Laumio:
     """ 
