@@ -49,8 +49,8 @@ def get_bp_led_status(client, numLed):
 def get_bp_button_status(client, numButton):
     return sub(client, conf.SENSORS_BP_BUTTON(num=numButton)) == 'ON'
 
-#def set_bp_led(client, numLed, msg='ON'):
-#    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(num=numLed), msg)
+def set_bp_led(client, numLed, msg='ON'):
+    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(num=numLed), msg)
 
 def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
@@ -66,5 +66,6 @@ def discover_laumio(client):
     print(f'… ({conf.ANNOUNCE_TOPIC})')
     utils.send_through_client(client, topic)
     time.sleep(3)
+    client.unsubscribe(topic)
     print('DONE')
     return tuple(laumios)
