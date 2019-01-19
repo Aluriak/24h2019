@@ -63,7 +63,7 @@ SPATIAL_POSITION = {
     'Laumio_104F03': 3,
     'Laumio_10508F': 4,
     'Laumio_10805F': 5,
-    'Laumio_CD0522': 6
+    'Laumio_CD0522': 6,
     'Laumio_0FC168': 7,
     'Laumio_D454DB': 8,
     'Laumio_107DA8': 9,
