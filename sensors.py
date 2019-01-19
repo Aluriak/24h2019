@@ -10,7 +10,7 @@ def sub(client, topic, *, timeout=1):
     def set_last_msg(client, userdata, message):
         nonlocal last_msg
         print('update last_msg')
-        last_msg = message.payload
+        last_msg = message.payload.decode()
 
     client.on_message = set_last_msg
     client.subscribe(topic)
