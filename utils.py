@@ -14,6 +14,25 @@ from matplotlib import colors
 import paho.mqtt.client as mqtt
 
 
+def get_thermal_comfort(humidity_percentage):
+    """Return thermal comfort sensation according to the given humidity.
+
+    0 - Normal, 1 - Comfort, 2 - Dry, 3 - Wet
+    """
+    if humidity_percentage <= 30:
+        # Dry
+        return 2
+    elif humidity_percentage <= 40:
+        # Normal
+        return 0
+    elif humidity_percentage <= 65:
+        # Comfort
+        return 1
+    else:
+        # Wet
+        return 3
+
+
 def crash_on_error(func):
     """Decorator for paho callbacks, ensuring the raising of any raised exception"""
     @wraps(func)
