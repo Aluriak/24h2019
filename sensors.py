@@ -2,6 +2,8 @@ import paho.mqtt.client as mqtt
 from collections import namedtuple
 import time
 import conf
+import utils
+
 
 def sub(client, topic, *, timeout=1):
     last_msg = None
@@ -26,6 +28,9 @@ def get_dist(client):
 
 def get_detection(client):
     return sub(client, 'presence/state')
+
+def get_remote(client, cmd):
+    return sub(client, REMOTE_CMD_TOPIC.format(cmd=cmd) == 'ON'
 
 
 def status(client, device):
