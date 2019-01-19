@@ -12,7 +12,14 @@ class Laumio:
 
 
     def off():
-        """ """
+        """ Swith the laumio off. Meaning the color is set to black."""
+        rgb = utils.rgb_from_colorname('black')
+        topic = self.topic.format(
+        name=self.name,
+        cmd=fill.__name__
+        )
+        self.client.publish(topic, payload=rgb)
+
         ...
 
     # function changing the color of the whole laumio
