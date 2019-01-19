@@ -124,11 +124,8 @@ class Laumio:
         blue = utils.rgb_from_colorname('blue')
         self.fill(blue)
 
-    def all_color([r, g, b]):
-        ...
-
-    def all_color(color):
-        """ Change the color of all the LEDs of the laumio to chosen color"""
+    def all(color):
+        """Change the color of all the LEDs of the laumio to chosen color"""
         rgb = utils.rgb_from_colorname(color)
         topic = COMMAND_TARGET_TOPIC.format(name=self.name, cmd="fill")
         self.client.publish(topic, payload=rgb)
@@ -140,7 +137,6 @@ class Laumio:
         color = utils.get_color_from_rgb(color)
         message = 
         self.client.publish(topic, payload=message)
-        
 
     def middle_ring():
         """ """
@@ -152,10 +148,12 @@ class Laumio:
 
     def _send(self, topic, message:str or [int]):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
-        if isinstance(message, str):  # it's a message to send
-            pass  # nothing to do (message is already correctly initialized)
-        else:  # must be an iterable of integers
-            integers = tuple(message)
-            assert not any(integer > 255 for integer in integers)
-            message = struct.pack('B' * len(integers), *integers)
-        return self.client.publish(topic, payload=message)
+        return utils.send_through_client(self.client, topic, message)
+
+
+    @staticmethod
+    def init_all():
+        client = ...
+        # detect existing laumio
+        # make class instances
+        return  # new GroupLaumio instance
