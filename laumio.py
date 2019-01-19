@@ -7,7 +7,7 @@ import json
 
 # Custom imports
 import conf
-import laumio_group
+from laumio_group import LaumioGroup 
 
 
 class Laumio:
@@ -151,7 +151,5 @@ class Laumio:
     @staticmethod
     def init_all():
         client = utils.create_client()
-        # detect existing laumio
-        # make class instances
         laumios = LaumioGroup(client)
-        return laumios # new GroupLaumio instance
+        return laumios
