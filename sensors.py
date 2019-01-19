@@ -38,7 +38,7 @@ def get_remote(client, cmd):
     return sub(client, conf.REMOTE_CMD_TOPIC.format(cmd=cmd)) == 'ON'
 
 def status(client, device):
-    if device in SENSORS_LIST:
+    if device in conf.SENSORS_LIST:
         return sub(client, conf.CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
     else:
         return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
@@ -47,10 +47,10 @@ def get_bp_led_status(client, numLed):
     return sub(client, conf.SENSORS_BP_LED.format(num=numLed)) == 'ON'
 
 def get_bp_button_status(client, numButton):
-    return sub(client, conf.SENSORS_BP_BUTTON(num=numButton)) == 'ON'
+    return sub(client, conf.SENSORS_BP_BUTTON.format(num=numButton)) == 'ON'
 
 def set_bp_led(client, numLed, msg='ON'):
-    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED(num=numLed), msg)
+    utils.send_through_client(client, conf.SENSORS_BP_CMD_LED.format(num=numLed), msg)
 
 def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
