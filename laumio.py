@@ -28,7 +28,7 @@ class Laumio:
             name=self.name,
             cmd=self.set_pixel.__name__
         )
-        message = [led_num] + list(rgb_values)
+        message = [led_num] + list(utils.rgb_from_colorname(rgb_values))
         self._send(topic, message)
 
 
@@ -41,7 +41,7 @@ class Laumio:
             name=self.name,
             cmd=self.set_ring.__name__
         )
-        message = [ring_num] + list(rgb_values)
+        message = [ring_num] + list(utils.rgb_from_colorname(rgb_values))
         self._send(topic, message)
 
 
@@ -54,7 +54,7 @@ class Laumio:
             name=self.name,
             cmd=self.set_column.__name__
         )
-        message = [column_num] + list(rgb_values)
+        message = [column_num] + list(utils.rgb_from_colorname(rgb_values))
         self._send(topic, message)
 
 
@@ -67,7 +67,7 @@ class Laumio:
             name=self.name,
             cmd=self.color_wipe.__name__
         )
-        message = list(rgb_values) + [timeout]
+        message = list(utils.rgb_from_colorname(rgb_values)) + [timeout]
         self._send(topic, message)
 
 
