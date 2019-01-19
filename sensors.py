@@ -30,11 +30,15 @@ def get_detection(client):
     return sub(client, 'presence/state')
 
 def get_remote(client, cmd):
-    return sub(client, REMOTE_CMD_TOPIC.format(cmd=cmd) == 'ON'
+    return sub(client, conf.REMOTE_CMD_TOPIC.format(cmd=cmd) == 'ON'
 
 def status(client, device):
     if device in SENSORS_LIST:
-        return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
+        return sub(client, conf.CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
     else:
-        return sub(client, CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
+        return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
+
+def discover_laumio(client):
+    utils.send_through_client(client, conf.COMMAND_ALL_TOPIC.format(cmd=discover)
+
 
