@@ -16,7 +16,7 @@ class Laumio:
         self.topic = conf.COMMAND_TARGET_TOPIC
 
 
-    def set_pixel(self, led_num, red_value, green_value, blue_value):
+    def set_pixel(self, led_num, rgb_values):
         """Change the color of a LED.
 
         .. note:: Message strucure on 4 bytes: BBBB: LED number, RGB values
@@ -26,33 +26,34 @@ class Laumio:
             name=self.name,
             cmd=set_pixel.__name__
         )
-        self.client.publish(topic, payload=message)
+        message = [led_num] + list(rgb_values)
+        self._send(topic, message)
 
 
-    def set_ring(ring_num, red_value, green_value, blue_value):
+    def set_ring(ring_num, rgb_values):
         """Set the color of a ring.
 
         .. note:: Message strucure on 4 bytes: BBBB: ring number, RGB values
         """
-        message = struct.pack('BBBB', ring_num, red_value, green_value, blue_value)
         topic = self.topic.format(
             name=self.name,
             cmd=set_ring.__name__
         )
-        self.client.publish(topic, payload=message)
+        message = [ring_num] + list(rgb_values)
+        self._send(topic, message)
 
 
-    def set_column(column_num, red_value, green_value, blue_value):
+    def set_column(column_num, rgb_values):
         """Set the color of a column.
 
         .. note:: Message strucure on 4 bytes: BBBB: column number, RGB values
         """
-        message = struct.pack('BBBB', column_num, red_value, green_value, blue_value)
         topic = self.topic.format(
             name=self.name,
             cmd=set_column.__name__
         )
-        self.client.publish(topic, payload=message)
+        message = [column_num] + list(rgb_values)
+        self._send(topic, message)
 
 
     def color_wipe(timeout, red_value, green_value, blue_value):
@@ -60,12 +61,12 @@ class Laumio:
 
         .. note:: Message strucure on 4 bytes: BBBB: RGB values, timeout
         """
-        message = struct.pack('BBBB', red_value, green_value, blue_value, timeout)
         topic = self.topic.format(
             name=self.name,
             cmd=color_wipe.__name__
         )
-        self.client.publish(topic, payload=message)
+        message = list(rgb_values) + [timeout]
+        self._send(topic, message)
 
 
     def animate_rainbow():
@@ -77,20 +78,19 @@ class Laumio:
             name=self.name,
             cmd=animate_rainbow.__name__
         )
-        self.client.publish(topic, payload=None)
+        self._send(topic, None)
 
 
-    def fill(red_value, green_value, blue_value):
+    def fill(rgb_values):
         """Set all leds with the given color.
 
         .. note:: Message strucure on 3 bytes: BBB: RGB values
         """
-        message = struct.pack('BBB', red_value, green_value, blue_value)
         topic = self.topic.format(
             name=self.name,
             cmd=fill.__name__
         )
-        self.client.publish(topic, payload=message)
+        self._send(topic, rgb_values)
 
 
     def send_JSON(json_data):
@@ -109,25 +109,20 @@ class Laumio:
             name=self.name,
             cmd=get_command(send_JSON.__name__)
         )
-        self.client.publish(topic, payload=json_data)
+        self._send(topic, json_data)
 
 
     def off():
-        """ Swith the laumio off. Meaning the color of the laumio is set to black."""
-        rgb = utils.rgb_from_colorname('black')
-        topic = self.topic.format(
-        name=self.name,
-        cmd=fill.__name__
-        )
-        self.client.publish(topic, payload=rgb)
+        """Swith the laumio off. Meaning the color of the laumio is set to black."""
+        black = utils.rgb_from_colorname('black')
+        self.fill(black)
 
 
     # function changing the color of the whole laumio
     def all_blue(self):
         """ Change the color of all the LEDs of the laumio to blue"""
         blue = utils.rgb_from_colorname('blue')
-        topic = COMMAND_TARGET_TOPIC.format(name=self.name, cmd="fill")
-        self.client.publish(topic, payload=blue)
+        self.fill(blue)
 
     def all(color):
         """Change the color of all the LEDs of the laumio to chosen color"""
