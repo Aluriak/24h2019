@@ -1,12 +1,14 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Standard imports
 import utils
 import json
-import laumio_group
+
+
 # Custom imports
 import conf
+import laumio_group
+
 
 class Laumio:
     """Laumio class dedicated to the gestion of 1 laumio."""
@@ -152,4 +154,4 @@ class Laumio:
         # detect existing laumio
         # make class instances
         laumios = LaumioGroup(client)
-        return  laumios # new GroupLaumio instance
+        return laumios # new GroupLaumio instance
