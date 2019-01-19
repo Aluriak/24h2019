@@ -1,7 +1,8 @@
-import paho.mqtt.client as mqtt
-from collections import namedtuple
 import time
 import conf
+from collections import namedtuple
+import paho.mqtt.client as mqtt
+
 
 def sub(client, topic, *, timeout=1):
     last_msg = None
@@ -13,11 +14,11 @@ def sub(client, topic, *, timeout=1):
     while last_msg is None and (time.time()-first_time) < timeout:
         time.sleep(0.01)
     return last_msg
-   
+
 def get_atmos(client):
     Atmos = namedtuple('Atmos',['temperature','pression','humidite_abs','humidite'])
-    return Atmos(temperature=sub(client, 'atmosphere/temperature'), 
-            pression=sub(client, 'atmosphere/pression'), 
+    return Atmos(temperature=sub(client, 'atmosphere/temperature'),
+            pression=sub(client, 'atmosphere/pression'),
             humidite_abs=sub(client, 'atmosphere/humidite_absolue'),
             humidite=sub(client, 'atmosphere/humidite'))
 
@@ -30,7 +31,7 @@ def get_detection(client):
 
 def status(client, device):
     if device in SENSORS_LIST:
-        return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device) == 'ON'
-    else:        
-        return sub(client, CONNECTION_STATUS_TOPIC.format(name=name) == 'ON' 
+        return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
+    else:
+        return sub(client, CONNECTION_STATUS_TOPIC.format(name=name)) == 'ON'
 
