@@ -10,7 +10,7 @@ def on_message(client, userdata, message):
 
 @crash_on_error
 def on_publish(*args):
-    print(f'PUBLISH: {publish}')
+    print(f'PUBLISH: {args}')
 
 @crash_on_error
 def on_connect(client, userdata, flags, rc):
