@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 """various helpers.
 
 """
 
+# Standard imports
 import sys
 import uuid
 import traceback

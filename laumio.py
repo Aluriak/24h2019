@@ -8,8 +8,7 @@ import utils
 import conf
 
 class Laumio:
-    """ 
-    """
+    """Laumio class dedicated to the gestion of 1 laumio."""
 
     def __init__(self, name):
         self.name = name
