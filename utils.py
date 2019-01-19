@@ -30,12 +30,12 @@ def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_
     return client
 
 
-def colorname_to_rgb(name:str) -> (int, int, int):
+def rgb_from_colorname(name:str) -> (int, int, int):
     """
 
-    >>> colorname_to_rgb('red')
+    >>> rgb_from_colorname('red')
     (255, 0, 0)
-    >>> colorname_to_rgb('blue')
+    >>> rgb_from_colorname('blue')
     (0, 0, 255)
 
     """
