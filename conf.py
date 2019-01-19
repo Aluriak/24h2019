@@ -9,6 +9,13 @@ COMMAND_TARGET_TOPIC = "laumio/{name}/{cmd}"
 CONNECTION_STATUS_SENSORS = "{sensors}/status"
 REMOTE_CMD_TOPIC = "remote/{cmd}/state"
 
+# Rings def
+RINGS = {
+    'BOTTOM': 0,
+    'MIDDLE': 1,
+    'TOP': 2,
+}
+
 
 # List of SENSORS
 SENSORS_LIST = ('capteur_bp','presence','distance','atmosphere')
