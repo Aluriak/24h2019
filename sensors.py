@@ -29,8 +29,8 @@ def get_detection(client):
 
 
 def status(client, device):
-    return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device) == 'ON'
-    
-def laumio_status(client, name):
-    return sub(client, CONNECTION_STATUS_TOPIC.format(name=name) == 'ON' 
+    if device in SENSORS_LIST:
+        return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device) == 'ON'
+    else:        
+        return sub(client, CONNECTION_STATUS_TOPIC.format(name=name) == 'ON' 
 
