@@ -40,6 +40,11 @@ def status(client, device):
         return sub(client, conf.CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
 
 def discover_laumio(client):
-    utils.send_through_client(client, conf.COMMAND_ALL_TOPIC.format(cmd=discover))
-
-
+    topic = conf.COMMAND_ALL_TOPIC.format(cmd=discover)
+    laumios = []
+    def on_laumio_name(client, userdata, message):
+        laumios.append(message.payload)
+    client.on_message = on_laumio_name
+    client.subscribe(topic)
+    utils.send_through_client(client, topic)
+    return laumios
