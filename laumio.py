@@ -151,4 +151,4 @@ class Laumio:
         # detect existing laumio
         # make class instances
         laumios = LaumioGroup(client)
-        return  laumios # new GroupLaumio instance
+        return laumios # new GroupLaumio instance
