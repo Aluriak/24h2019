@@ -1,8 +1,13 @@
 #/usr/bin/env python3
-
+ 
 class Laumio:
     """ 
     """
+
+    def __init__(self, name):
+        self.name = name
+        self.client = utils.create_client()
+
 
     def off():
         """ """
@@ -10,7 +15,9 @@ class Laumio:
 
     # function changing the color of the whole laumio
     def all_blue():
-        ...
+        """ Change the color of all the LEDs of the laumio to blue"""
+        blue = utils.get_color_from_rgb('blue')
+        self.client.publish(f'laumio/{self.name}/file', payload=blue)
 
     def all_color():
         ...
@@ -30,6 +37,3 @@ class Laumio:
         ...
 
 
-
-    def __init__(self, name):
-        self.name = name 
