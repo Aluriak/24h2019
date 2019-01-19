@@ -83,7 +83,7 @@ class Laumio:
         self._send(topic, None)
 
 
-    def fill(self, rgb_values):
+    def fill(self, rgb_values:str or [int]):
         """Set all leds with the given color.
 
         .. note:: Message strucure on 3 bytes: BBB: RGB values
@@ -92,7 +92,7 @@ class Laumio:
             name=self.name,
             cmd=self.fill.__name__
         )
-        self._send(topic, rgb_values)
+        self._send(topic, utils.rgb_from_colorname(rgb_values))
 
     # Alias to fill
     all = fill
@@ -126,22 +126,21 @@ class Laumio:
     # function changing the color of the whole laumio
     def all_blue(self):
         """ Change the color of all the LEDs of the laumio to blue"""
-        blue = utils.rgb_from_colorname('blue')
-        self.fill(blue)
+        self.fill('blue')
 
 
     # functions dealing with the colors of the rings of the laumio
     def bottom_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['BOTTOM'], color)
+        self.set_ring(conf.RINGS['BOTTOM'], utils.rgb_from_colorname(color))
 
     def middle_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['MIDDLE'], color)
+        self.set_ring(conf.RINGS['MIDDLE'], utils.rgb_from_colorname(color))
 
     def top_ring(self, color):
         """ """
-        self.set_ring(self, conf.RINGS['TOP'], color)
+        self.set_ring(conf.RINGS['TOP'], utils.rgb_from_colorname(color))
 
     def _send(self, topic, message:str or [int]):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
@@ -149,6 +148,6 @@ class Laumio:
 
 
     @staticmethod
-    def init_all():
-        client = utils.create_client()
+    def init_all(servername='localhost', port=1883):
+        client = utils.create_client(servername, int(port))
         return LaumioGroup(client)

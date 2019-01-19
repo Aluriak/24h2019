@@ -44,10 +44,17 @@ def status(client, device):
 
 def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
+    print(f'topic: {topic}')
     laumios = []
     def on_laumio_name(client, userdata, message):
-        laumios.append(message.payload)
+        name = message.payload.decode()
+        if name != 'discover':
+            print(f'new laumio: {name}')
+            laumios.append(name)
     client.on_message = on_laumio_name
     client.subscribe(conf.ANNOUNCE_TOPIC)
+    print(f'… ({conf.ANNOUNCE_TOPIC})')
     utils.send_through_client(client, topic)
-    return laumios
+    time.sleep(3)
+    print('DONE')
+    return tuple(laumios)
