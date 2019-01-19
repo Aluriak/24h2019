@@ -1,5 +1,7 @@
 #/usr/bin/env python3
- 
+import utils
+import conf 
+
 class Laumio:
     """ 
     """
@@ -14,10 +16,11 @@ class Laumio:
         ...
 
     # function changing the color of the whole laumio
-    def all_blue():
+    def all_blue(self):
         """ Change the color of all the LEDs of the laumio to blue"""
         blue = utils.get_color_from_rgb('blue')
-        self.client.publish(f'laumio/{self.name}/file', payload=blue)
+        topic = COMMAND_TARGET_TOPIC.format(name=self.name, cmd="fill")
+        self.client.publish(topic, payload=blue)
 
     def all_color():
         ...
