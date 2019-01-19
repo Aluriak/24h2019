@@ -1,6 +1,7 @@
 
 
 from laupoint import laupoint
+laupoint.set_opt(host='mpd.lan', port=1883)
 
 
 def right_left_walk(size:int) -> [int]:
@@ -10,7 +11,7 @@ def right_left_walk(size:int) -> [int]:
     (2, 3, 1, 4, 0)
 
     """
-    laupoint()
+    laupoint(color='sienna', duration=2)
     middle = size // 2
     yield middle
     low, up = middle-1, middle+1
@@ -18,12 +19,12 @@ def right_left_walk(size:int) -> [int]:
     while change:
         change = False
         if up < size:
-            laupoint('red')
+            laupoint(color='red')
             yield up
             up += 1
             change = True
         if low >= 0:
-            laupoint('blue')
+            laupoint(color='blue')
             yield low
             low -= 1
             change = True
