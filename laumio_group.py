@@ -1,5 +1,4 @@
 import time
-from laumio import Laumio
 from utils import *
 from sensors import discover_laumio 
 
@@ -7,17 +6,15 @@ class LaumioGroup:
     """Iterable over Laumio, taking care of their initialization"""
 
     def __init__(self, client):
+        from laumio import Laumio
         self._laumios = []
         # retrieving of the laumios' names
         laumios_names= discover_laumio(client)
         for name in laumios_names:
             laumio = Laumio(client, name)
             self._laumios.append(laumio)
-        return self._laumios
 
-
-
-    def __iter__(self) -> [Laumio]:
+    def __iter__(self):
         return iter(list(self._laumios))
 
     def as_matrix(self):
@@ -26,7 +23,6 @@ class LaumioGroup:
 
 
 if __name__ == '__main__':
-    
     group = Laumio.init_all()
     laumios = tuple(group)
     laumio = laumios[0]

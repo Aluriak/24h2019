@@ -7,7 +7,7 @@ import json
 
 # Custom imports
 import conf
-from laumio_group import LaumioGroup 
+from laumio_group import LaumioGroup
 
 
 class Laumio:
