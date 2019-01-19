@@ -9,25 +9,26 @@ usage:
 import sys
 import time
 import random
-import laumio
-from laumio import Laumio
+import music
+import utils
 
 
-def main(laumios):
-    laumios = tuple(laumios)
-
-    while True:
-
-        for laumio in random.sample(laumios, len(laumios) // 2):
-            print(f'laumio: {laumio.name}')
-            laumio.bottom_ring('blue')
-            laumio.middle_ring('white')
-            laumio.top_ring('red')
+def complete_manipulation(client):
+    commands = ['toggle', 'toggle', 'stop', 'play', 'next', 'pause', 'play', 'previous', 'setvol', 'setvol', 'stop']
+    volume = [35, 15]
+    nb_vol = 0
+    for cmd in commands:
+        if cmd != 'setvol' :
+            music.music_control(client, cmd, value=None)
+        else:
+            if nb_vol < len(volume):
+                music.music_control(client, cmd, value=volume[nb_vol])
+                nb_vol+=1
         time.sleep(2)
-        print('logoff…')
 
-        for laumio in laumios:
-            laumio.off()
+def toggle_manip(client):
+    for i in range(0,2):
+        music.music_control(client, 'toggle', value=None)
         time.sleep(2)
 
 
@@ -43,4 +44,4 @@ if __name__ == "__main__":
         port = sys.argv[2]
     else:
         print(__doc__)
-    main(Laumio.init_all(servername=servername, port=port))
+    toggle_manip(utils.create_client(servername, port))
