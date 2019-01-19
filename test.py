@@ -4,12 +4,11 @@ import paho.mqtt.client as mqtt
 
 
 def on_message(client, userdata, message):
-    print(f'MESSAGE: client: {client}   userdata: {userdata}    message: "{message.payload}" (topic: {topic})')
+    print(f'MESSAGE: client: {client}   userdata: {userdata}    message: "{message.payload}" (topic: {message.topic})')
 def on_publish(*args):
     print(f'PUBLISH: {publish}')
 def on_connect(client, userdata, flags, rc):
     print(f'CONNECT: client: {client}   userdata: {userdata}  flags: {flags}  rc: {rc})')
-
 
 
 if __name__ == '__main__':
