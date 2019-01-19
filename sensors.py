@@ -45,6 +45,6 @@ def discover_laumio(client):
     def on_laumio_name(client, userdata, message):
         laumios.append(message.payload)
     client.on_message = on_laumio_name
-    client.subscribe(topic)
+    client.subscribe(conf.ANNOUCE_TOPIC)
     utils.send_through_client(client, topic)
     return laumios
