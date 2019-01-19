@@ -7,8 +7,9 @@ Improvements:
 
 """
 
-import laumio
+import time
 import syne
+import laumio
 
 
 class Laupoint(metaclass=syne.synepoint.Synepoint):
@@ -26,14 +27,19 @@ class Laupoint(metaclass=syne.synepoint.Synepoint):
             self.options['last_laumio'].off()
         if laumio is None:
             raise RuntimeError(f"Not enough Laumio to render code ({len(self.options['laumios'])} were available)")
+        laumio.fill(self.options['color'])
+        time.sleep(self.options['duration'])
+        print(f"{self.options['color']} for {self.options['duration']}s")
         self.options['last_laumio'] = laumio
 
-    def set_opt(self, color:str='green'):
+    def set_opt(self, color:str='green', host:str='localhost', port:int=1883, duration:float=0.9):
         "Populate config based on given args"
-        laumios = tuple(laumio.Laumio.init_all())
+        laumios = tuple(laumio.Laumio.init_all(servername=host, port=port))
         return {
             'color': str(color),
             # 'fading_time': float(fading_time),
+            'duration': duration,
+            'laumios': laumios,
             'laumios': laumios,
             'remaining_laumios': iter(laumios),
             'last_laumio': None
