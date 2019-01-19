@@ -164,4 +164,4 @@ class Laumio:
             integers = tuple(message)
             assert not any(integer > 255 for integer in integers)
             message = struct.pack('B' * len(integers), *integers)
-        return self.client.publish(topic, payload=message)
+        return self.client.publish(topic, payload=message).wait_for_publish()
