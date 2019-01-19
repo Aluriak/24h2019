@@ -156,4 +156,12 @@ class Laumio:
         """ """
         ...
 
-
+    def _send(self, topic, message:str or [int]):
+        """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
+        if isinstance(message, str):  # it's a message to send
+            pass  # nothing to do (message is already correctly initialized)
+        else:  # must be an iterable of integers
+            integers = tuple(message)
+            assert not any(integer > 255 for integer in integers)
+            message = struct.pack('B' * len(integers), *integers)
+        return self.client.publish(topic, payload=message)
