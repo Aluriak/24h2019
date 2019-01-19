@@ -32,10 +32,9 @@ def get_detection(client):
 def get_remote(client, cmd):
     return sub(client, REMOTE_CMD_TOPIC.format(cmd=cmd) == 'ON'
 
-
 def status(client, device):
     if device in SENSORS_LIST:
         return sub(client, CONNECTION_STATUS_SENSORS.format(sensors=device)) == 'ON'
     else:
-        return sub(client, CONNECTION_STATUS_TOPIC.format(name=name)) == 'ON'
+        return sub(client, CONNECTION_STATUS_TOPIC.format(name=device)) == 'ON'
 
