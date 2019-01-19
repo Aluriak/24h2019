@@ -150,5 +150,5 @@ class Laumio:
 
     @staticmethod
     def init_all(servername='localhost', port=1883):
-        client = utils.create_client(servername, port)
+        client = utils.create_client(servername, int(port))
         return LaumioGroup(client)
