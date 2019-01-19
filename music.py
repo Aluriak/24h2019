@@ -5,6 +5,9 @@ import conf
 
 
 def music_control(client, cmd, value=None):
+    """
+    param value used only for cmd='setvol', integer between 0 and 100
+    """
     topic = conf.COMMAND_MUSIC.format(cmd=cmd)
     if cmd == 'setvol':
         utils.send_though_client(client, topic, value)
@@ -16,14 +19,17 @@ def music_control(client, cmd, value=None):
         client.on_message = on_state_music
         client.subscribe('music/status')
         utils.send_through_client(client, topic)
-        time.sleep(1)
+        time.sleep(2)
         return status
     elif cmd == 'getvol':
+        volume = None
         def on_volume_music(client, userdata, message):
+            nonlocal volume
             volume = message.payload.decode()
         client.on_message = on_volume_music
         client.subscribe('music/status')
         utils.send_through_client(client, topic)
+        time.sleep(2)
         return volume
     else:
         utils.send_though_client(client, topic)
