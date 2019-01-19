@@ -1,10 +1,12 @@
 import laumio
+import utils
 
 class LaumioGroup:
     """Iterable over Laumio, taking care of their initialization"""
 
-    def __init__(self):
+    def __init__(self, client):
         self._laumios = []
+
 
 
     def __iter__(self) -> [Laumio]:

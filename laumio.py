@@ -10,9 +10,9 @@ import conf
 class Laumio:
     """Laumio class dedicated to the gestion of 1 laumio."""
 
-    def __init__(self, name):
+    def __init__(self, client, name):
         self.name = name
-        self.client = utils.create_client()
+        self.client = client
         self.topic = conf.COMMAND_TARGET_TOPIC
 
 
@@ -153,7 +153,8 @@ class Laumio:
 
     @staticmethod
     def init_all():
-        client = ...
+        client = utils.create_client()
         # detect existing laumio
         # make class instances
-        return  # new GroupLaumio instance
+        laumios = LaumioGroup(client)
+        return  laumios # new GroupLaumio instance
