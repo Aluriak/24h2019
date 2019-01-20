@@ -68,6 +68,6 @@ def discover_laumio(client):
     print(f'… ({conf.ANNOUNCE_TOPIC})')
     utils.send_through_client(client, topic)
     time.sleep(3)
-    client.unsubscribe(topic)
+    client.unsubscribe(conf.ANNOUNCE_TOPIC)
     print('DONE')
     return tuple(laumios)
