@@ -29,6 +29,8 @@ COMMAND_MUSIC = "music/control/{cmd}"
 SENSORS_BP_LED = "capteur_bp/switch/led{num}/state"
 SENSORS_BP_BUTTON = "capteur_bp/binary_sensor/bp{num}/state"
 SENSORS_BP_CMD_LED = "capteur_bp/switch/led{num}/command"
+DOMOTICZ_IN = "domoticz/in"
+DOMOTICZ_OUT = "domoticz/out"
 
 # Rings def
 RINGS = {

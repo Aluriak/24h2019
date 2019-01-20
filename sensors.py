@@ -9,12 +9,12 @@ def sub(client, topic, *, timeout=1):
     @utils.crash_on_error
     def set_last_msg(client, userdata, message):
         nonlocal last_msg
-        print('update last_msg')
+        #print('update last_msg')
         last_msg = message.payload.decode()
 
     client.on_message = set_last_msg
     client.subscribe(topic)
-    print(f'Subscribe to {topic}')
+    #print(f'Subscribe to {topic}')
     first_time = time.time()
     while last_msg is None and (time.time()-first_time) < timeout:
         time.sleep(0.01)
