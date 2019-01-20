@@ -3,7 +3,7 @@
 import utils
 import conf
 import time
-
+from mpd import MPDClient
 
 def music_control(client, cmd, value=None):
     """
@@ -37,3 +37,21 @@ def music_control(client, cmd, value=None):
             utils.send_through_client(client, topic)
     else :
         print("Use a string for the 'cmd' parameter.")
+
+
+def mpd_client(host, port):
+    client = MPDClient()
+    client.timeout = 10
+    client.idletimeout = None
+    client.connect(host, port)
+    return client
+
+def mpd_play(client, songID):
+    client.playid(songID)
+
+def find_song_id(client, song):
+    
+
+
+
+
