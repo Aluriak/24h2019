@@ -39,6 +39,27 @@ RINGS = {
     'TOP': 2,
 }
 
+# Domoticz IDX sensors
+ATMOS_IDX = 2
+DIST_IDX = 3
+
+# Domoticz IDX Laumios
+LAUMIO_IDX = {
+	'Laumio_1D9486': 5,
+    'Laumio_104A13': 6,
+    'Laumio_0FBFBF': 7,
+    'Laumio_104F03': 8,
+    'Laumio_10508F': 9,
+    'Laumio_10805F': 10,
+    'Laumio_CD0522': 11,
+    'Laumio_0FC168': 12,
+    'Laumio_D454DB': 13,
+    'Laumio_107DA8': 14,
+    'Laumio_88813D': 15,
+    'Laumio_439BA9': 16,
+}
+
+
 
 # List of SENSORS
 SENSORS_LIST = ('capteur_bp','presence','distance','atmosphere')

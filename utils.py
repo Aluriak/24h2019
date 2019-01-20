@@ -19,6 +19,11 @@ def get_thermal_comfort(humidity_percentage):
 
     Humidity status: 0 - Normal, 1 - Comfort, 2 - Dry, 3 - Wet
     """
+
+    if humidity_percentage is None:
+        return 0
+
+    humidity_percentage = int(humidity_percentage)
     if humidity_percentage <= 30:
         # Dry
         return 2

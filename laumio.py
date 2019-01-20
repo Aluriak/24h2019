@@ -4,7 +4,6 @@
 import utils
 import json
 
-
 # Custom imports
 import conf
 from laumio_group import LaumioGroup
@@ -17,6 +16,10 @@ class Laumio:
         self.name = name
         self.client = client
         self.topic = conf.COMMAND_TARGET_TOPIC
+
+    @property
+    def domoticz_id(self):
+        return conf.LAUMIO_IDX[self.name]
 
     @property
     def atmos(self):
