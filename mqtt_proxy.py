@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import time
 
 from laumio import Laumio
 import sensors
@@ -104,24 +105,36 @@ class ProxyLaumio():
         }
         """
 
-
-        retval = sensors.sub(client, conf.DOMOTICZ_OUT)
-        print(retval)
+        # Listen Domoticz
+        retval = sensors.sub(self.laumio.client, conf.DOMOTICZ_OUT)
         if retval is None:
             return
 
         json_data = json.loads(retval)
 
-        if json_data['idx'] != self.laumio.domoticz_id and \
-        json_data.get('Color', None) is None:
+#        print('idx', json_data['idx'], 'domo id', self.laumio.domoticz_id)
+#
+##        if json_data['idx'] == self.laumio.domoticz_id:
+##            print(json_data.get('Color', None), json_data.get('Color'))
+
+        if json_data['idx'] not in tuple(conf.LAUMIO_IDX.values()) or \
+        not json_data.get('Color', None):
             return
 
+        topic = conf.COMMAND_TARGET_TOPIC.format(
+            name=conf.REVERSE_LAUMIO_IDX[json_data['idx']],
+            cmd='fill'
+        )
+        print(json_data['nvalue'])
         # nvalue = 0 if Off
         if json_data['nvalue'] == 0:
-            self.laumio.fill([0, 0, 0])
+            print("OFF")
+            self.laumio._send(topic, utils.rgb_from_colorname([0, 0, 0]))
+            return
 
         color = json_data['Color']
-        self.laumio.fill([color['r'], color['g'], color['b']])
+#        print("couleur demandee")
+        self.laumio._send(topic, utils.rgb_from_colorname([color['r'], color['g'], color['b']]))
 
 
     def get_selector_switch(self):
@@ -138,10 +151,10 @@ class ProxyLaumio():
         """
 
         # Laumio subscribe
-        red = sensors.sub(client, conf.SENSORS_BP_LED.format(num=1))
-        blue = sensors.sub(client, conf.SENSORS_BP_LED.format(num=2))
-        yellow = sensors.sub(client, conf.SENSORS_BP_LED.format(num=3))
-        green = sensors.sub(client, conf.SENSORS_BP_LED.format(num=4))
+        red = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=1))
+        blue = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=2))
+        yellow = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=3))
+        green = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=4))
 
         # Broadcast to domoticz
         nvalue = {
@@ -167,26 +180,69 @@ class ProxyLaumio():
         }))
 
 
+#    def set_selector_switch(self):
+#        """
+#        """
+#
+#
+#        retval = sensors.sub(client, conf.DOMOTICZ_OUT)
+#        if retval is None:
+#            return
+#
+#        json_data = json.loads(retval)
+#
+#        if json_data['idx'] not in tuple(conf.BUTTONS_IDX.values()):
+#            return
+#
+#        print(retval)
+#
+#
+#        def check_json(json_data):
+#
+#            idx = json_data['idx']
+#            BUTTONS_LAUMIO[idx]
+#
+#            _send(self, topic, message:str or [int]):
 
-
-
+        #data = check_json(red)
+#            if data:
+#
+#            elif check_json(blue):
+#
+#            elif check_json(yellow):
+#
+#            elif check_json(green):
+#
+#            print(json_data['nvalue'],
+#                  json_data['svalue1']
 
 
 if __name__ == "__main__":
 
-    import time
-    client = utils.create_client()
-    laumio = Laumio(client, "Laumio_1D9486")
-    proxy = ProxyLaumio(laumio)
+    allLaumio = Laumio.init_all(servername="localhost")
+    all_proxy = [ProxyLaumio(laumio) for laumio in allLaumio]
 
-    i = 0
-    while(i < 150):
-        print(i)
-        #proxy.atmos()
-        #proxy.distance()
-        #proxy.led_switch()
-        proxy.get_selector_switch()
-#        proxy.set_selector_switch()
-        i += 1
-        time.sleep(1)
+    while True:
+        prox = all_proxy[0]
+#        prox.atmos()
+#        prox.distance()
+        prox.led_switch()
 
+        time.sleep(0.5)
+
+
+#    import time
+#    client = utils.create_client(servername="mpd.lan")
+#    laumio = Laumio(client, "Laumio_1D9486")
+#    proxy = ProxyLaumio(laumio)
+#
+#    i = 0
+#    while(True):
+#        print(i)
+##        proxy.atmos()
+##        proxy.distance()
+#        proxy.led_switch()
+##        proxy.get_selector_switch()
+#        i += 1
+#        time.sleep(0.2)
+#
