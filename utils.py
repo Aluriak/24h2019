@@ -17,7 +17,7 @@ import paho.mqtt.client as mqtt
 def get_thermal_comfort(humidity_percentage):
     """Return thermal comfort sensation according to the given humidity.
 
-    0 - Normal, 1 - Comfort, 2 - Dry, 3 - Wet
+    Humidity status: 0 - Normal, 1 - Comfort, 2 - Dry, 3 - Wet
     """
     if humidity_percentage <= 30:
         # Dry
@@ -31,6 +31,28 @@ def get_thermal_comfort(humidity_percentage):
     else:
         # Wet
         return 3
+
+
+def get_forecast(atmospheric_pressure):
+    """
+    Forecast: 0 - None, 1 - Sunny, 2 - PartlyCloudy, 3 - Cloudy, 4 - Rain
+    """
+
+    if not isinstance(atmospheric_pressure, int):
+        # None
+        return 0
+    if atmospheric_pressure < 900:
+        # Rain
+        return 4
+    elif atmospheric_pressure < 980:
+        # Cloudy
+        return 3
+    elif atmospheric_pressure < 1013:
+        # PartlyCloudy
+        return 2
+    else:
+        # Sunny
+        return 1
 
 
 def crash_on_error(func):
