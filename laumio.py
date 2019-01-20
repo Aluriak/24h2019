@@ -20,6 +20,7 @@ class Laumio:
         
     @property
     def atmos(self):
+        """return namedtuple with temperature, pression, humidite, humidite abs"""
         return sensors.get_atmos(self.client)
 
     @property
@@ -28,19 +29,24 @@ class Laumio:
 
     @property
     def presence(self):
+        """return boolean"""
         return sensors.get_detection(self.client)
 
     def get_remote(self, cmd):
+        """return boolean"""
         return sensors.get_remote(self.client, cmd)
 
     def status(self, device):
+        """return boolean"""
         return sensors.status(self.client, device)
 
     def get_bp_led_status(self, numLed):
+        """return boolean"""
         return sensors.get_bp_led_status(self.client, numLed)
 
-    def get_bp_button_status(self, numled):
-        return sensors.get_bp_button_status(self.client, numLed)
+    def get_bp_button_status(self, numButton):
+        """return boolean"""
+        return sensors.get_bp_button_status(self.client, numButton)
 
     def set_bp_led(self, numLed, msg='ON'):
         sensors.set_bp_led(self.client, numLed, msg)
