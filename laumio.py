@@ -8,7 +8,7 @@ import json
 # Custom imports
 import conf
 from laumio_group import LaumioGroup
-
+import sensors
 
 class Laumio:
     """Laumio class dedicated to the gestion of 1 laumio."""
@@ -18,6 +18,40 @@ class Laumio:
         self.client = client
         self.topic = conf.COMMAND_TARGET_TOPIC
 
+    @property
+    def atmos(self):
+        """
+        :return: namedtuple with attributes:
+            temperature (°C)
+            pression (Pa)
+            humidite_abs (g.m^-3)
+            humidite (%)
+        :rtype: <namedtuple>
+        """
+        return sensors.get_atmos(self.client)
+
+    @property
+    def distance(self):
+        return sensors.get_dist(self.client)
+
+    @property
+    def presence(self):
+        return sensors.get_detection(self.client)
+
+    def get_remote(self, cmd):
+        return sensors.get_remote(self.client, cmd)
+
+    def status(self, device):
+        return sensors.status(self.client, device)
+
+    def get_bp_led_status(self, numLed):
+        return sensors.get_bp_led_status(self.client, numLed)
+
+    def get_bp_button_status(self, numled):
+        return sensors.get_bp_button_status(self.client, numLed)
+
+    def set_bp_led(self, numLed, msg='ON'):
+        sensors.set_bp_led(self.client, numLed, msg)
 
     def set_pixel(self, led_num, rgb_values):
         """Change the color of a LED.
