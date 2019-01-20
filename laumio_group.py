@@ -26,6 +26,7 @@ class LaumioGroup:
 
 
 if __name__ == '__main__':
+    from laumio import Laumio
     group = Laumio.init_all()
     laumios = tuple(group)
     laumio = laumios[0]
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     if laumio.temperature < 10:
         laumio.all_blue()
     if laumio.temperature > 20:
-        laumio.all_red()
+        laumio.fill('red')
         laumio.bottom_ring([255, 255, 255])
     else:
-        laumio.all_green()
+        laumio.fill('green')
