@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt
 
 def sub(client, topic, *, timeout=1):
     last_msg = None
+    @utils.crash_on_error
     def set_last_msg(client, userdata, message):
         nonlocal last_msg
         print('update last_msg')
@@ -56,6 +57,7 @@ def discover_laumio(client):
     topic = conf.COMMAND_ALL_TOPIC.format(cmd='discover')
     print(f'topic: {topic}')
     laumios = []
+    @utils.crash_on_error
     def on_laumio_name(client, userdata, message):
         name = message.payload.decode()
         if name != 'discover':
