@@ -38,20 +38,15 @@ def get_forecast(atmospheric_pressure):
     Forecast: 0 - None, 1 - Sunny, 2 - PartlyCloudy, 3 - Cloudy, 4 - Rain
     """
 
-    if not isinstance(atmospheric_pressure, int):
-        # None
+    if not isinstance(atmospheric_pressure, int):  # None
         return 0
-    if atmospheric_pressure < 900:
-        # Rain
+    if atmospheric_pressure < 900:  # Rain
         return 4
-    elif atmospheric_pressure < 980:
-        # Cloudy
+    elif atmospheric_pressure < 980:  # Cloudy
         return 3
-    elif atmospheric_pressure < 1013:
-        # PartlyCloudy
+    elif atmospheric_pressure < 1013:  # PartlyCloudy
         return 2
-    else:
-        # Sunny
+    else:  # Sunny
         return 1
 
 
@@ -70,13 +65,13 @@ def crash_on_error(func):
 def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_'):
     """Return a new client initialized with given args"""
     client = mqtt.Client(client_id=id_prefix + str(uuid.uuid4()))
-    client.connect(servername, port=port)
+    client.connect(servername, port=int(port))
     client.loop_start()
     return client
 
 def send_through_client(client, topic:str, message:str or [int] or None=None):
     """Wrapper around client.publish, allowing code to send either str or iterable of integers"""
-    if isinstance(message, str) or message is None:  # it's a message to send
+    if isinstance(message, (bytes, str)) or message is None:  # it's a message to send
         pass  # nothing to do (message is already correctly initialized)
     else:  # must be an iterable of integers
         integers = tuple(message)
