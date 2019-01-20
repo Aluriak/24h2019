@@ -49,7 +49,7 @@ def mpd_client(host, port):
 def mpd_play(client, songID):
     client.playid(songID)
 
-def find_song_id(client, song):
+#def find_song_id(client, song):
     
 
 
