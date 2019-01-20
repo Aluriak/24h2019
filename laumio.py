@@ -18,6 +18,10 @@ class Laumio:
         self.topic = conf.COMMAND_TARGET_TOPIC
 
     @property
+    def domoticz_id(self):
+        return conf.LAUMIO_IDX[self.name]
+
+    @property
     def atmos(self):
         """
         :return: namedtuple with attributes:
