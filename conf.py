@@ -45,7 +45,7 @@ DIST_IDX = 3
 
 # Domoticz IDX Laumios
 LAUMIO_IDX = {
-	'Laumio_1D9486': 5,
+    'Laumio_1D9486': 5,
     'Laumio_104A13': 6,
     'Laumio_0FBFBF': 7,
     'Laumio_104F03': 8,
@@ -59,7 +59,19 @@ LAUMIO_IDX = {
     'Laumio_439BA9': 16,
 }
 
-
+# Buttons IDX mapping
+BUTTONS_IDX = {
+    'SwitchRed': 17,
+    'SwitchYellow': 18,
+    'SwitchGreen': 19,
+    'SwitchBlue': 20,
+}
+BUTTONS_LAUMIO = {
+    17: 1,
+    18: 2,
+    19: 3,
+    20: 4,
+}
 
 # List of SENSORS
 SENSORS_LIST = ('capteur_bp','presence','distance','atmosphere')
