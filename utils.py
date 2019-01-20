@@ -69,7 +69,6 @@ def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_
     client.loop_start()
     return client
 
-@crash_on_error
 def send_through_client(client, topic:str, message:str or [int] or None=None):
     """Wrapper around client.publish, allowing code to send either str or iterable of integers"""
     if isinstance(message, (bytes, str)) or message is None:  # it's a message to send
