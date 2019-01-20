@@ -17,10 +17,17 @@ class Laumio:
         self.name = name
         self.client = client
         self.topic = conf.COMMAND_TARGET_TOPIC
-        
+
     @property
     def atmos(self):
-        """return namedtuple with temperature, pression, humidite, humidite abs"""
+        """
+        :return: namedtuple with attributes:
+            temperature (°C)
+            pression (Pa)
+            humidite_abs (g.m^-3)
+            humidite (%)
+        :rtype: <namedtuple>
+        """
         return sensors.get_atmos(self.client)
 
     @property
