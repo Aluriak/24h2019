@@ -1,0 +1,48 @@
+
+DSL:
+    commands*=BaseCommand;
+BaseCommand:
+    (Require | Group | Color | Condition | Callback | Runfile | Wait) '.'?;
+
+
+Require:
+    'require' sensor=Identifier;
+
+Group:
+    'group' laumios+=Identifier[','] 'as' groupname=Identifier;
+
+Color:
+    ('fill' | 'color') group_or_laumio+=Identifier[','] (specifier=Identifier (target='ring' | target='column'))? ('in' | 'as') color=Identifier;
+
+Condition:
+    'if' comparison=Comparison '{' ifcommands*=BaseCommand '}' 'else' '{' elsecommands*=BaseCommand '}';
+
+Callback:
+    'whenever' comparison=Comparison '{' subcommands*=BaseCommand '}';
+
+Runfile:
+    ('run'|'runfile') filename+=Filename[','];
+
+Wait:
+    'wait' ((amount=FLOAT unit=Unit) | amount='forever');
+
+
+//#####################
+
+
+Comparison:
+    SensorComparison | ButtonComparison;
+SensorComparison:
+    sensor=Identifier op=Operator cmp_value=ComparableValue;
+ButtonComparison:
+    'button' button_number=INT 'is' negation?='not' 'pressed';
+
+
+//#####################
+ComparableValue:
+    INT | FLOAT | Identifier;
+Operator:
+    op=/==|>=|<=|!=|=\/=|=|>|</;
+Identifier:  id=/[a-zA-Z0-9_-]+/;
+Filename:    id=/[a-zA-Z0-9\.\/\~\[\]\\'"_-]+/;
+Unit:        id=/(s|second|seconds|m|min|hour|h|day|d)/;
