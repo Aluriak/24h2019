@@ -30,3 +30,7 @@ simul_red:
 	mosquitto_pub -h localhost -m 'ON' -t 'capteur_bp/switch/led1/state' -r
 	sleep 5
 	mosquitto_pub -h localhost -m 'OFF' -t 'capteur_bp/switch/led1/state' -r
+
+simul_announce:
+	mosquitto_pub -h localhost -m 'Laumio_1D9486' -t 'laumio/status/advertise' -r
+	mosquitto_pub -h localhost -m 'Laumio_104A13' -t 'laumio/status/advertise' -r
