@@ -16,3 +16,13 @@ test:
 
 
 .PHONY: t test
+
+simul_atmos:
+	mosquitto_pub -h localhost -m '1025' -t 'atmosphere/pression' -r
+	mosquitto_pub -h localhost -m '25' -t 'atmosphere/temperature' -r
+	mosquitto_pub -h localhost -m '50' -t 'atmosphere/humidite_absolue' -r
+	mosquitto_pub -h localhost -m '65' -t 'atmosphere/humidite' -r
+
+simul_distance:
+	mosquitto_pub -h localhost -m '10' -t 'distance/value' -r
+	
