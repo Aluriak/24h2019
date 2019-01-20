@@ -124,7 +124,47 @@ class ProxyLaumio():
         self.laumio.fill([color['r'], color['g'], color['b']])
 
 
+    def get_selector_switch(self):
+        """Used for IR command
 
+        idx, level
+
+        Off:
+        "nvalue" : 0,
+
+        Level1/Red:
+        "nvalue" : 1,
+
+        """
+
+        # Laumio subscribe
+        red = sensors.sub(client, conf.SENSORS_BP_LED.format(num=1))
+        blue = sensors.sub(client, conf.SENSORS_BP_LED.format(num=2))
+        yellow = sensors.sub(client, conf.SENSORS_BP_LED.format(num=3))
+        green = sensors.sub(client, conf.SENSORS_BP_LED.format(num=4))
+
+        # Broadcast to domoticz
+        nvalue = {
+            'ON': 1,
+            'OFF': 0,
+        }
+
+        self.laumio._send(self.topic, json.dumps({
+            'idx': conf.BUTTONS_IDX['SwitchRed'],
+            'nvalue': nvalue.get(red, None),
+        }))
+        self.laumio._send(self.topic, json.dumps({
+            'idx': conf.BUTTONS_IDX['SwitchYellow'],
+            'nvalue': nvalue.get(blue, None),
+        }))
+        self.laumio._send(self.topic, json.dumps({
+            'idx': conf.BUTTONS_IDX['SwitchGreen'],
+            'nvalue': nvalue.get(yellow, None),
+        }))
+        self.laumio._send(self.topic, json.dumps({
+            'idx': conf.BUTTONS_IDX['SwitchBlue'],
+            'nvalue': nvalue.get(green, None),
+        }))
 
 
 
@@ -141,10 +181,12 @@ if __name__ == "__main__":
 
     i = 0
     while(i < 150):
-
+        print(i)
         #proxy.atmos()
         #proxy.distance()
-        proxy.led_switch()
+        #proxy.led_switch()
+        proxy.get_selector_switch()
+#        proxy.set_selector_switch()
         i += 1
         time.sleep(1)
 

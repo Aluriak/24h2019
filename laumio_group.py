@@ -1,4 +1,5 @@
 import time
+import sys
 from utils import *
 from sensors import discover_laumio 
 
@@ -26,7 +27,20 @@ class LaumioGroup:
 
 
 if __name__ == '__main__':
-    group = Laumio.init_all()
+    if len(sys.argv) == 1:
+        servername = 'localhost'
+        port = 1883
+    elif len(sys.argv) == 2:
+        servername = sys.argv[1]
+        port = 1883
+    elif len(sys.argv) == 3:
+        servername = sys.argv[1]
+        port = sys.argv[2]
+    else:
+        print(__doc__)
+    
+    from laumio import Laumio
+    group = Laumio.init_all(servername=servername, port=port)
     laumios = tuple(group)
     laumio = laumios[0]
     laumio.off()
@@ -36,7 +50,7 @@ if __name__ == '__main__':
     if laumio.temperature < 10:
         laumio.all_blue()
     if laumio.temperature > 20:
-        laumio.all_red()
+        laumio.fill('red')
         laumio.bottom_ring([255, 255, 255])
     else:
-        laumio.all_green()
+        laumio.fill('green')

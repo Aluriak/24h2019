@@ -26,3 +26,7 @@ simul_atmos:
 simul_distance:
 	mosquitto_pub -h localhost -m '10' -t 'distance/value' -r
 	
+simul_red:
+	mosquitto_pub -h localhost -m 'ON' -t 'capteur_bp/switch/led1/state' -r
+	sleep 5
+	mosquitto_pub -h localhost -m 'OFF' -t 'capteur_bp/switch/led1/state' -r
