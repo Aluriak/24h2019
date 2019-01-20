@@ -5,8 +5,12 @@ Stops when it's hot enough.
 
 The more laptops are making this, the best.
 
+usage:
+        python radiator.py <target temperature>
+
 """
 
+import sys
 import multiprocessing
 from multiprocessing import Pool
 from laumio import Laumio
@@ -31,10 +35,11 @@ def make_heat_by_lighting():
         laumio.fill('white')  # because white is more energetic, probably
 
 if __name__ == '__main__':
+    target = sys.argv[1] if len(sys.argv) > 1 else TARGET:
     print('TEMP:', float(laumios[0].atmos.temperature))
     print('lighting everything…')
     make_heat_by_lighting()
     print('computing heat…')
-    while float(laumios[0].atmos.temperature) < TARGET:
+    while float(laumios[0].atmos.temperature) < target:
         make_heat_with_all_CPU()
 
