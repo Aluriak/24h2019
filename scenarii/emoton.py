@@ -65,7 +65,7 @@ class Bot(irc.bot.SingleServerIRCBot):
             if two in positiv_laumios: two_color = 'green'
             if two in neutral_laumios: two_color = 'white'
             # exchange the two colors
-            print(f'EXCHANGE: {one}/{one_ring}/{one_color} with {two}/{two_ring}/{one_color}')
+            print(f'EXCHANGE: {one}/{one_ring}/{one_color} with {two}/{two_ring}/{two_color}')
             one.set_ring(one_ring, two_color)
             two.set_ring(two_ring, one_color)
 
