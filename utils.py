@@ -29,7 +29,7 @@ def crash_on_error(func):
 def create_client(servername:str='localhost', port:int=1883, id_prefix:str='TBC_'):
     """Return a new client initialized with given args"""
     client = mqtt.Client(client_id=id_prefix + str(uuid.uuid4()))
-    client.connect(servername, port=port)
+    client.connect(servername, port=int(port))
     client.loop_start()
     return client
 
