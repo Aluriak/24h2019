@@ -43,3 +43,6 @@ launch_mqtt_proxy:
 
 launch_domoticz:
 	sudo service domoticz start
+
+open_domoticz_dashboard:
+	firefox "http://localhost:8080/#/Dashboard"
