@@ -37,3 +37,9 @@ simul_red:
 simul_announce:
 	mosquitto_pub -h localhost -m 'Laumio_1D9486' -t 'laumio/status/advertise' -r
 	mosquitto_pub -h localhost -m 'Laumio_104A13' -t 'laumio/status/advertise' -r
+
+launch_mqtt_proxy:
+	python ./mqtt_proxy.py
+
+launch_domoticz:
+	sudo service domoticz start
