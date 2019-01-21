@@ -183,66 +183,28 @@ class ProxyLaumio():
 #    def set_selector_switch(self):
 #        """
 #        """
-#
-#
-#        retval = sensors.sub(client, conf.DOMOTICZ_OUT)
-#        if retval is None:
-#            return
-#
-#        json_data = json.loads(retval)
-#
-#        if json_data['idx'] not in tuple(conf.BUTTONS_IDX.values()):
-#            return
-#
-#        print(retval)
-#
-#
-#        def check_json(json_data):
-#
-#            idx = json_data['idx']
-#            BUTTONS_LAUMIO[idx]
-#
-#            _send(self, topic, message:str or [int]):
-
-        #data = check_json(red)
-#            if data:
-#
-#            elif check_json(blue):
-#
-#            elif check_json(yellow):
-#
-#            elif check_json(green):
-#
-#            print(json_data['nvalue'],
-#                  json_data['svalue1']
 
 
 if __name__ == "__main__":
 
+    # MPD.lan server
+    #allLaumio = Laumio.init_all(servername="mpd.lan")
+    # Local test server
     allLaumio = Laumio.init_all(servername="localhost")
     all_proxy = [ProxyLaumio(laumio) for laumio in allLaumio]
 
+    # TODO: do not instantiate all laumios because only 1 is needed
+    # TODO: make a loop_forever with callbacks instead of a time.sleep...
+    i = 0
     while True:
         prox = all_proxy[0]
-#        prox.atmos()
-#        prox.distance()
+        if i % 15 == 0:
+            # Avoid flooding the topic
+            # Get atmos/distance sensors every few seconds
+            prox.atmos()
+            prox.distance()
+        # Get and broadcast LED settings as soon as possible
         prox.led_switch()
 
-        time.sleep(0.5)
-
-
-#    import time
-#    client = utils.create_client(servername="mpd.lan")
-#    laumio = Laumio(client, "Laumio_1D9486")
-#    proxy = ProxyLaumio(laumio)
-#
-#    i = 0
-#    while(True):
-#        print(i)
-##        proxy.atmos()
-##        proxy.distance()
-#        proxy.led_switch()
-##        proxy.get_selector_switch()
-#        i += 1
-#        time.sleep(0.2)
-#
+        time.sleep(0.2)
+        i += 1
