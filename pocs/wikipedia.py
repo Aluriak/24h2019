@@ -47,7 +47,7 @@ def render(data:dict):
         laumio.top_ring('red')
     elif not data['is_anon']:
         laumio.top_ring('green')
-    if change_size < 10:
+    if int(change_size) < 10:
         laumio.bottom_ring('orange')
         duration = 1
     elif change_size > 1000:
