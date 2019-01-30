@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# Standard imports
 import json
+import time
+import functools
 
+# Custom imports
 from laumio import Laumio
 import sensors
 import utils
@@ -13,6 +17,8 @@ class ProxyLaumio():
         self.laumio = laumio
         self.topic = conf.DOMOTICZ_IN
         #self.domoticz_id = domoticz_id
+        # Add some QoS for a support by flooded servers...
+        self._send = functools.partial(self.laumio._send, qos=2, retain=True)
 
 
     def atmos(self):
@@ -40,7 +46,7 @@ class ProxyLaumio():
             )
         }
         print(json_data)
-        self.laumio._send(self.topic, json.dumps(json_data))
+        self._send(self.topic, json.dumps(json_data))
 
 
     def distance(self):
@@ -55,7 +61,7 @@ class ProxyLaumio():
             "svalue": dist_value,
         }
         print(json_data)
-        self.laumio._send(self.topic, json.dumps(json_data))
+        self._send(self.topic, json.dumps(json_data))
 
 
 
@@ -104,24 +110,36 @@ class ProxyLaumio():
         }
         """
 
-
-        retval = sensors.sub(client, conf.DOMOTICZ_OUT)
-        print(retval)
+        # Listen Domoticz
+        retval = sensors.sub(self.laumio.client, conf.DOMOTICZ_OUT)
         if retval is None:
             return
 
         json_data = json.loads(retval)
 
-        if json_data['idx'] != self.laumio.domoticz_id and \
-        json_data.get('Color', None) is None:
+#        print('idx', json_data['idx'], 'domo id', self.laumio.domoticz_id)
+#
+##        if json_data['idx'] == self.laumio.domoticz_id:
+##            print(json_data.get('Color', None), json_data.get('Color'))
+
+        if json_data['idx'] not in tuple(conf.LAUMIO_IDX.values()) or \
+        not json_data.get('Color', None):
             return
 
+        topic = conf.COMMAND_TARGET_TOPIC.format(
+            name=conf.REVERSE_LAUMIO_IDX[json_data['idx']],
+            cmd='fill'
+        )
+        print(json_data['nvalue'])
         # nvalue = 0 if Off
         if json_data['nvalue'] == 0:
-            self.laumio.fill([0, 0, 0])
+            print("OFF")
+            self._send(topic, utils.rgb_from_colorname([0, 0, 0]))
+            return
 
         color = json_data['Color']
-        self.laumio.fill([color['r'], color['g'], color['b']])
+#        print("couleur demandee")
+        self._send(topic, utils.rgb_from_colorname([color['r'], color['g'], color['b']]))
 
 
     def get_selector_switch(self):
@@ -138,10 +156,10 @@ class ProxyLaumio():
         """
 
         # Laumio subscribe
-        red = sensors.sub(client, conf.SENSORS_BP_LED.format(num=1))
-        blue = sensors.sub(client, conf.SENSORS_BP_LED.format(num=2))
-        yellow = sensors.sub(client, conf.SENSORS_BP_LED.format(num=3))
-        green = sensors.sub(client, conf.SENSORS_BP_LED.format(num=4))
+        red = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=1))
+        blue = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=2))
+        yellow = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=3))
+        green = sensors.sub(self.laumio.client, conf.SENSORS_BP_LED.format(num=4))
 
         # Broadcast to domoticz
         nvalue = {
@@ -149,44 +167,51 @@ class ProxyLaumio():
             'OFF': 0,
         }
 
-        self.laumio._send(self.topic, json.dumps({
+        self._send(self.topic, json.dumps({
             'idx': conf.BUTTONS_IDX['SwitchRed'],
             'nvalue': nvalue.get(red, None),
         }))
-        self.laumio._send(self.topic, json.dumps({
+        self._send(self.topic, json.dumps({
             'idx': conf.BUTTONS_IDX['SwitchYellow'],
             'nvalue': nvalue.get(blue, None),
         }))
-        self.laumio._send(self.topic, json.dumps({
+        self._send(self.topic, json.dumps({
             'idx': conf.BUTTONS_IDX['SwitchGreen'],
             'nvalue': nvalue.get(yellow, None),
         }))
-        self.laumio._send(self.topic, json.dumps({
+        self._send(self.topic, json.dumps({
             'idx': conf.BUTTONS_IDX['SwitchBlue'],
             'nvalue': nvalue.get(green, None),
         }))
 
 
-
-
-
+#    def set_selector_switch(self):
+#        """
+#        """
 
 
 if __name__ == "__main__":
 
-    import time
-    client = utils.create_client()
-    laumio = Laumio(client, "Laumio_1D9486")
-    proxy = ProxyLaumio(laumio)
+    # MPD.lan server
+    #allLaumio = Laumio.init_all(servername="mpd.lan")
+    # Local test server
+    allLaumio = Laumio.init_all(servername="localhost")
+    all_proxy = [ProxyLaumio(laumio) for laumio in allLaumio]
 
+    # TODO: do not instantiate all laumios because only 1 is needed
+    # TODO: make a loop_forever with callbacks instead of a time.sleep...
+    # TODO: Some messages are lost (see paho-mqtt limitations), it is better to
+    # use callbacks like on_publish()
     i = 0
-    while(i < 150):
-        print(i)
-        #proxy.atmos()
-        #proxy.distance()
-        #proxy.led_switch()
-        proxy.get_selector_switch()
-#        proxy.set_selector_switch()
-        i += 1
-        time.sleep(1)
+    while True:
+        prox = all_proxy[0]
+        if i % 15 == 0:
+            # Avoid flooding the topic
+            # Get atmos/distance sensors every few seconds
+            prox.atmos()
+            prox.distance()
+        # Get and broadcast LED settings as soon as possible
+        prox.led_switch()
 
+        time.sleep(0.2)
+        i += 1

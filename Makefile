@@ -17,6 +17,9 @@ test:
 
 .PHONY: t test
 
+listen_broadcast:
+	mosquitto_sub -h localhost -t "#" -v
+
 simul_atmos:
 	mosquitto_pub -h localhost -m '1025' -t 'atmosphere/pression' -r
 	mosquitto_pub -h localhost -m '25' -t 'atmosphere/temperature' -r
@@ -30,3 +33,16 @@ simul_red:
 	mosquitto_pub -h localhost -m 'ON' -t 'capteur_bp/switch/led1/state' -r
 	sleep 5
 	mosquitto_pub -h localhost -m 'OFF' -t 'capteur_bp/switch/led1/state' -r
+
+simul_announce:
+	mosquitto_pub -h localhost -m 'Laumio_1D9486' -t 'laumio/status/advertise' -r
+	mosquitto_pub -h localhost -m 'Laumio_104A13' -t 'laumio/status/advertise' -r
+
+launch_mqtt_proxy:
+	python ./mqtt_proxy.py
+
+launch_domoticz:
+	sudo service domoticz start
+
+open_domoticz_dashboard:
+	firefox "http://localhost:8080/#/Dashboard"

@@ -184,9 +184,10 @@ class Laumio:
         """ """
         self.set_ring(conf.RINGS['TOP'], utils.rgb_from_colorname(color))
 
-    def _send(self, topic, message:str or [int]):
+    def _send(self, topic, message:str or [int], qos=0, retain=False):
         """Wrapper around self.client.publish, allowing code to send either str or iterable of integers"""
-        return utils.send_through_client(self.client, topic, message)
+        return utils.send_through_client(self.client, topic, message,
+                                         qos=qos, retain=retain)
 
 
     @staticmethod

@@ -59,6 +59,22 @@ LAUMIO_IDX = {
     'Laumio_439BA9': 16,
 }
 
+REVERSE_LAUMIO_IDX = {
+    5: 'Laumio_1D9486',
+    6: 'Laumio_104A13',
+    7: 'Laumio_0FBFBF',
+    8: 'Laumio_104F03',
+    9: 'Laumio_10508F',
+    10:'Laumio_10805F',
+    11:'Laumio_CD0522',
+    12:'Laumio_0FC168',
+    13:'Laumio_D454DB',
+    14:'Laumio_107DA8',
+    15:'Laumio_88813D',
+    16:'Laumio_439BA9',
+}
+
+
 # Buttons IDX mapping
 BUTTONS_IDX = {
     'SwitchRed': 17,

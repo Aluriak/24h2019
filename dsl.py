@@ -194,8 +194,8 @@ class Wait(metaclass=model_class):
             ttw = multiplier.get(self.unit, 1) * self.amount
         while ttw > 0:
             context['call callbacks'](context, callbacks)
-            time.sleep(1)
-            ttw -= 1
+            time.sleep(0.1)  # define responsivity of the execution ; make it quick
+            ttw -= 0.1
 
 
 class Runfile(metaclass=model_class):
